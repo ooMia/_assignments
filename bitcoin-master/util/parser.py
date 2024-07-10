@@ -32,7 +32,7 @@ def parse_input(input_data: str) -> tuple[str, list, int]:
 
 def get_globals() -> tuple[str, list, int]:
     # read from txt file `input.txt`
-    with open("./input.txt", "r") as file:
+    with open("input.txt", "r") as file:
         input_data = file.read()
     mr, tx_list, index = parse_input(input_data)
     return mr, tx_list, index
@@ -40,5 +40,5 @@ def get_globals() -> tuple[str, list, int]:
 
 # Test the function with the given input
 if __name__ == '__main__':
-    get_globals()
+    print(*get_globals(), sep='\n')
     pass

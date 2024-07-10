@@ -52,6 +52,7 @@ if __name__ == '__main__':
 
     H_a = 'adcc7b631011debe749ee4f97efaa4fe55d321e2153e460ae0b798369d033b7f'
     H_b = 'a8f0f38acc57d76e4dc1e549d20599da6339fe7269b4b4a838ab733e36e4aacb'
-    expect = "0289c815b5994037762d54302909bc643cf76efcd9b77714a1e30c1c16f4b8ac"
+    expect = '0289c815b5994037762d54302909bc643cf76efcd9b77714a1e30c1c16f4b8ac'
     assert expect == dhash(H_a, H_b)
+    assert htob(H_a) == htob_2(H_a)
     pass

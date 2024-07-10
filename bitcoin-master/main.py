@@ -1,6 +1,8 @@
+import random
+from hashlib import sha256
 from util.parser import get_globals
 from util.dsha256 import dhash
-from util.merkle_maker import *
+from merkle_maker import calculate_merkle_root
 
 
 def run(
@@ -9,20 +11,13 @@ def run(
         index: int
 ):
     print(mr, tx_list, index)
-    i = 0
 
-    # while True:
     while True:
-        # i to 064x
-        pred = format(i, '064x')
+        pred = sha256(random.randbytes(2)).digest()[::-1].hex()
         merkle_root = calculate_merkle_root(tx_list, index, pred)
         if merkle_root == mr:
             return pred
-        i += 1
         tx_list[index] = dhash(tx_list[index])
-
-        if i % 100000 == 0:
-            print(i, pred, merkle_root)
 
 
 if __name__ == '__main__':
