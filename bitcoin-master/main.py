@@ -1,7 +1,5 @@
 import random
-from hashlib import sha256
-from util.parser import get_globals
-from util.dsha256 import dhash
+from util.dsha256 import dhash, btoh, sha256_
 from merkle_maker import calculate_merkle_root
 
 
@@ -10,10 +8,12 @@ def run(
         tx_list: list[str],
         index: int
 ):
-    print(mr, tx_list, index)
+    print(f"{mr=}")
+    print(*tx_list, sep='\n')
+    print(f"{index=}")
 
     while True:
-        pred = sha256(random.randbytes(2)).digest()[::-1].hex()
+        pred = btoh(sha256_(random.randbytes(2)))
         merkle_root = calculate_merkle_root(tx_list, index, pred)
         if merkle_root == mr:
             return pred
@@ -21,9 +21,8 @@ def run(
 
 
 if __name__ == '__main__':
+    from util.parser import get_globals
+
     mr, tx_list, index = get_globals()
-    print(f"{mr=}")
-    print(*tx_list, sep='\n')
-    print(f"{index=}")
     res = run(mr, tx_list, index)
     print(f"{res=}")
