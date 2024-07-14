@@ -34,7 +34,7 @@ def btoh(byte: bytes) -> str:
     return byte[::-1].hex()
 
 
-def _sha256(bi: bytes) -> bytes:
+def sha256_(bi: bytes) -> bytes:
     return sha256(bi).digest()
 
 
@@ -42,7 +42,7 @@ def dhash(bi_1: str, bi_2: str = None) -> str:
     # https://github.com/bitcoin/bitcoin/blob/9adebe145557ef410964dd48a02f3d239f488cd0/src/consensus/merkle.cpp#L13
     if bi_2 is None:
         bi_2 = bi_1
-    return btoh(_sha256(_sha256(htob(bi_1) + htob(bi_2))))
+    return btoh(sha256_(sha256_(htob(bi_1) + htob(bi_2))))
 
 
 if __name__ == '__main__':
