@@ -1,6 +1,7 @@
 import random
-from util.dsha256 import dhash, btoh, sha256_
+
 from merkle_maker import calculate_merkle_root
+from util.dsha256 import dhash, btoh, sha256_
 
 
 def run(
