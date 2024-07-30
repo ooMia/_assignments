@@ -1,8 +1,8 @@
 import os
 
+from dotenv import load_dotenv
 from web3 import *
 from web3.types import Address
-from dotenv import load_dotenv
 
 # Initialize Web3 connection of Ethereum mainnet
 load_dotenv()
