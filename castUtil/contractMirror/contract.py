@@ -1,7 +1,3 @@
-from eth_hash.auto import (
-    keccak,
-)
-
 # function 0x41424344() public payable {
 #     v0 = sha256hash(0x77aeec0b38e07e77e0fceaee2742275c84ac2fc0026da95abfb692a7b934a280);
 #     if (0 != v0) {
@@ -30,12 +26,16 @@ from eth_hash.auto import (
 # }
 from hashlib import sha256
 
+from eth_hash.auto import (
+    keccak,
+)
+
 a = ["0x77aeec0b38e07e77e0fceaee2742275c84ac2fc0026da95abfb692a7b934a280",
      "0x88f1eb6fc83d5b83b8d9443c4af8f72f8664c992b211610f47acd2e6f0767357"]
 b = ["0x7a9c571c22a679da5b82394f8ead31cf567a930e6827e9564c50bd722114afc7",
      "0x333c86e14b3dbbb36563c1da6120387d418af2250faf48da26536a9111acc717",
      "0x0345b666897fc960d9bda0fab6a75830bb2dd4dda3f4804731ac4ff7722c7dcd"
-     "0x88f1eb6fc83d5b83b8d9443c4af8f72f8664c992b211610f47acd2e6f0767357"] # this goes mem0
+     "0x88f1eb6fc83d5b83b8d9443c4af8f72f8664c992b211610f47acd2e6f0767357"]  # this goes mem0
 
 r = sha256(bytes.fromhex("77aeec0b38e07e77e0fceaee2742275c84ac2fc0026da95abfb692a7b934a280"))
 print(r.hexdigest())
