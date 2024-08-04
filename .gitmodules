@@ -1,3 +1,6 @@
 [submodule "mpc-python"]
 	path = mpc-python
 	url = https://github.com/ffddz/mpc-python-version-ooMia
+[submodule "mpc-python-2"]
+	path = mpc-python-2
+	url = https://github.com/ffddz/mpc-test-python-version-ooMia
