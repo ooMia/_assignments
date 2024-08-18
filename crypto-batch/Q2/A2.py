@@ -66,13 +66,13 @@ def sum_product(a, b, m=None):
 
 
 def _solve(
-    p: int,  # strong prime
-    y: int,  # public key
-    sig1: tuple[int, int],  # signature 1 (r, s)
-    sig2: tuple[int, int],  # signature 2 (r, s)
-    sig3: tuple[int, int],  # signature 3 (r, s)
-    ts1: list[int],  # list of first 3 random coefficients
-    ts2: list[int],  # list of last 3 random coefficients
+        p: int,  # strong prime
+        y: int,  # public key
+        sig1: tuple[int, int],  # signature 1 (r, s)
+        sig2: tuple[int, int],  # signature 2 (r, s)
+        sig3: tuple[int, int],  # signature 3 (r, s)
+        ts1: list[int],  # list of first 3 random coefficients
+        ts2: list[int],  # list of last 3 random coefficients
 ) -> list[int]:  # new signatures [r1, s1, r2, s2, r3, s3]
 
     def find_intersection_point(A, B, C, D, E, F, G, H, p):

@@ -3,6 +3,7 @@ import random
 from math import gcd
 
 from Crypto.Util.number import getStrongPrime, bytes_to_long
+
 from A2 import sum_product
 
 
