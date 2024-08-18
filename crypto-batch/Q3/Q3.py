@@ -3,11 +3,6 @@ import random
 
 from Crypto.Util.number import *
 
-while True:
-    p = getStrongPrime(512)
-    if p % 4 == 3:
-        break
-
 
 def is_qr(v, p):
     return pow(v, (p - 1) // 2, p) == 1
@@ -20,14 +15,6 @@ def sqrt(v, p):
     return pow(v, (p + 1) // 4, p)
 
 
-while True:
-    d = random.randint(2, p - 1)
-    if not is_qr(d, p):
-        break
-
-
-# Equation is: -x^2 + y^2 = 1 + d*x^2*y^2
-
 def random_point(d, p):
     while True:
         x = random.randint(1, p - 1)
@@ -38,36 +25,39 @@ def random_point(d, p):
             return x, y
 
 
-def add(P, Q, d, p):
-    # NOTE: IMPLEMENT THIS
-    pass
-
-
-def double(P, d, p):
-    # NOTE: IMPLEMENT THIS
-    pass
-
-
 def is_on_curve(P, d, p):
     x, y = P
     return (-x * x + y * y) % p == (1 + d * x * x * y * y) % p
 
 
-P = random_point(d, p)
-Q = random_point(d, p)
+if __name__ == "__main__":
+    while True:
+        p = getStrongPrime(512)
+        if p % 4 == 3:
+            break
 
-P2Q2 = add(double(P, d, p), double(Q, d, p), d, p)
-P2Q2_ = double(add(P, Q, d, p), d, p)
+    while True:
+        d = random.randint(2, p - 1)
+        if not is_qr(d, p):
+            break
 
-assert P2Q2 == P2Q2_
-assert is_on_curve(P2Q2, d, p)
+    P = random_point(d, p)
+    Q = random_point(d, p)
 
-print(f"{p = }")
-print(f"{d = }")
+    from A3 import add, double
 
-print(f"{P = }")
-print(f"{Q = }")
+    P2Q2 = add(double(P, d, p), double(Q, d, p), d, p)
+    P2Q2_ = double(add(P, Q, d, p), d, p)
 
-x, y = P2Q2
-flag = hashlib.sha256(long_to_bytes(x) + long_to_bytes(y)).hexdigest()
-print("Flag is DH{" + flag + "}")
+    assert P2Q2 == P2Q2_
+    assert is_on_curve(P2Q2, d, p)
+
+    print(f"{p = }")
+    print(f"{d = }")
+
+    print(f"{P = }")
+    print(f"{Q = }")
+
+    x, y = P2Q2
+    flag = hashlib.sha256(long_to_bytes(x) + long_to_bytes(y)).hexdigest()
+    print("Flag is DH{" + flag + "}")
