@@ -4,11 +4,12 @@ import random
 from blspy import PrivateKey, BasicSchemeMPL, G1Element, G2Element, GTElement
 
 
-def mult(k, G):
+def mult(k: int, G: G2Element) -> G2Element:
     if k == 1:
         return G
 
-    T = mult(k // 2, G)
+    T: G2Element = mult(k // 2, G)
+    # G2Element 사이의 덧셈 연산
     T = T + T
     if k % 2 == 1:
         T = T + G
@@ -20,7 +21,8 @@ def pow_gt(e: GTElement, k: int) -> GTElement:
     if k == 1:
         return e
 
-    t = pow_gt(e, k // 2)
+    t: GTElement = pow_gt(e, k // 2)
+    # GTElement 사이의 곱셈 연산
     t = t * t
     if k % 2 == 1:
         t = t * e
@@ -71,12 +73,15 @@ if __name__ == "__main__":
     print(f"Coefs are: {coefs}")
 
     print("Give me your signatures!")
-    user_sig1 = G2Element.from_bytes(bytes.fromhex(input("sig1 > ")))
-    user_sig2 = G2Element.from_bytes(bytes.fromhex(input("sig2 > ")))
-    user_sig3 = G2Element.from_bytes(bytes.fromhex(input("sig3 > ")))
+    # user_sig1 = G2Element.from_bytes(bytes.fromhex(input("sig1 > ")))
+    # user_sig2 = G2Element.from_bytes(bytes.fromhex(input("sig2 > ")))
+    # user_sig3 = G2Element.from_bytes(bytes.fromhex(input("sig3 > ")))
+    from A4 import _solve
+
+    user_sig1, user_sig2, user_sig3 = _solve(pk, sig1, sig2, sig3, coefs[:3], coefs[3:])
 
     if any(
-        i == j for i in [sig1, sig2, sig3] for j in [user_sig1, user_sig2, user_sig3]
+            i == j for i in [sig1, sig2, sig3] for j in [user_sig1, user_sig2, user_sig3]
     ):
         print("NO HACK")
         exit(0)
