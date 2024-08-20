@@ -1,15 +1,22 @@
 import os
 import random
 
-from blspy import PrivateKey, BasicSchemeMPL, G1Element, G2Element, GTElement
+from blspy import PrivateKey, BasicSchemeMPL, G1Element, G2Element, GTElement, PublicKeyMPL, SignatureMPL
 
 
-def mult(k: int, G: G2Element) -> G2Element:
+def mult(k: int, G: PublicKeyMPL | SignatureMPL | GTElement) -> G2Element:
+    """
+    Multiply G-Element by scalar k
+    Args:
+        k: scalar
+        G: PublicKeyMPL | SignatureMPL | GTElement
+    Returns: k * G
+    """
+
     if k == 1:
         return G
 
     T: G2Element = mult(k // 2, G)
-    # G2Element 사이의 덧셈 연산
     T = T + T
     if k % 2 == 1:
         T = T + G
@@ -17,12 +24,18 @@ def mult(k: int, G: G2Element) -> G2Element:
     return T
 
 
-def pow_gt(e: GTElement, k: int) -> GTElement:
+def pow_gt(e: PublicKeyMPL | SignatureMPL | GTElement, k: int) -> GTElement:
+    """
+    Power of G-Element to scalar k
+    Args:
+        e: PublicKeyMPL | SignatureMPL | GTElement
+        k: scalar
+    Returns: e ** k
+    """
     if k == 1:
         return e
 
     t: GTElement = pow_gt(e, k // 2)
-    # GTElement 사이의 곱셈 연산
     t = t * t
     if k % 2 == 1:
         t = t * e
@@ -30,7 +43,13 @@ def pow_gt(e: GTElement, k: int) -> GTElement:
     return t
 
 
-def batch_verify(sigs: list[int], msgs: list[bytes], coefs: list[int]) -> bool:
+def batch_verify(sigs: list[G2Element], msgs: list[bytes], coefs: list[int]) -> bool:
+    """
+    Batch verify signatures
+    Notes:
+        - LHS = sum(coef[i] * sig[i])
+        - RHS = mul(pk.pair(msg[i]) ** coef[i])
+    """
     S: G2Element = None
     for sig, coef in zip(sigs, coefs):
         if S is None:
@@ -76,8 +95,10 @@ if __name__ == "__main__":
     # user_sig1 = G2Element.from_bytes(bytes.fromhex(input("sig1 > ")))
     # user_sig2 = G2Element.from_bytes(bytes.fromhex(input("sig2 > ")))
     # user_sig3 = G2Element.from_bytes(bytes.fromhex(input("sig3 > ")))
-    from A4 import _solve
 
+    from A4 import _solve, parse_input
+
+    pk, sig1, sig2, sig3, ts1, ts2 = parse_input()
     user_sig1, user_sig2, user_sig3 = _solve(pk, sig1, sig2, sig3, coefs[:3], coefs[3:])
 
     if any(
@@ -96,4 +117,5 @@ if __name__ == "__main__":
     # with open("./flag", "r") as f:
     #     flag = f.read()
     #     print("Here is the flag:", flag)
+    print(user_sig1, user_sig2, user_sig3, sep="\n")
     print("Good job!")
