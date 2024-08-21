@@ -33,12 +33,7 @@ def _solve(
         ts1: list[int],  # list of first 3 random coefficients
         ts2: list[int],  # list of last 3 random coefficients
 ) -> list[G2Element]:  # new signatures [s1, s2, s3]
-    msg1: bytes = b"upside"
-    msg2: bytes = b"academy"
-    msg3: bytes = b"best"
-    msgs = [msg1, msg2, msg3]
     sigs = [sig1, sig2, sig3]
-    coefs = ts1 + ts2
 
     def calc_k(sigs: list[G2Element], coefs: list[int]) -> G2Element:
         S: G2Element = None
@@ -105,25 +100,7 @@ def _solve(
     if new_sigs is None:
         raise ValueError("No intersection point found")
 
-    S: G2Element = None
-    for sig, coef in zip(new_sigs, coefs):
-        if S is None:
-            S = mult(coef, sig)
-        else:
-            S = S + mult(coef, sig)
-    L: GTElement = S.pair(G1Element.generator())
-
-    R: GTElement = None
-    for msg, coef in zip(msgs, coefs):
-        if R is None:
-            R = pow_gt(pk.pair(BasicSchemeMPL.g2_from_message(msg)), coef)
-        else:
-            R = R * pow_gt(pk.pair(BasicSchemeMPL.g2_from_message(msg)), coef)
-
-    assert L == R
-
-    res = new_sigs
-    return res
+    return new_sigs
 
 
 def verify(sig1, sig2, sig3, ts1, ts2, pk):

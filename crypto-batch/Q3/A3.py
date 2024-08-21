@@ -39,14 +39,14 @@ def add(P, Q, d, p):
     a = -1
     x1, y1 = P
     x2, y2 = Q
-    mul = lambda *n: mulmod(p, *n)
-    add = lambda *n: summod(p, *n)
+    _mul = lambda *n: mulmod(p, *n)
+    _sum = lambda *n: summod(p, *n)
 
-    x3 = add(mul(x1, y2), mul(y1, x2))
-    x3 *= pow(add(1, mul(d, x1, x2, y1, y2)), -1, p)
+    x3 = _sum(_mul(x1, y2), _mul(y1, x2))
+    x3 *= pow(_sum(1, _mul(d, x1, x2, y1, y2)), -1, p)
 
-    y3 = add(mul(y1, y2), mul(-a, x1, x2))
-    y3 *= pow(add(1, mul(-d, x1, x2, y1, y2)), -1, p)
+    y3 = _sum(_mul(y1, y2), _mul(-a, x1, x2))
+    y3 *= pow(_sum(1, _mul(-d, x1, x2, y1, y2)), -1, p)
 
     return x3 % p, y3 % p
 
@@ -58,14 +58,14 @@ def double(P, d, p):
     """
     a = -1
     x1, y1 = P
-    mul = lambda *n: mulmod(p, *n)
-    add = lambda *n: summod(p, *n)
+    _mul = lambda *n: mulmod(p, *n)
+    _sum = lambda *n: summod(p, *n)
 
-    x3 = mul(2, x1, y1)
-    x3 *= pow(add(mul(a, mul(x1, x1)), mul(y1, y1)), -1, p)
+    x3 = _mul(2, x1, y1)
+    x3 *= pow(_sum(_mul(a, _mul(x1, x1)), _mul(y1, y1)), -1, p)
 
-    y3 = add(mul(y1, y1), mul(-a, x1, x1))
-    y3 *= pow(add(2, mul(-a, x1, x1), mul(-y1, y1)), -1, p)
+    y3 = _sum(_mul(y1, y1), _mul(-a, x1, x1))
+    y3 *= pow(_sum(2, _mul(-a, x1, x1), _mul(-y1, y1)), -1, p)
 
     return x3 % p, y3 % p
 

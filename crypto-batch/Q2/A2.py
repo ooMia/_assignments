@@ -1,6 +1,5 @@
 import random
 import re
-from math import gcd
 
 
 def parse_input() -> tuple[int, int, list[tuple[int, int]], list[int], list[int]]:
@@ -76,15 +75,6 @@ def _solve(
 ) -> list[int]:  # new signatures [r1, s1, r2, s2, r3, s3]
 
     def find_intersection_point(A, B, C, D, E, F, G, H, p):
-        # 최대공약수 g 계산
-        g_A = gcd(A, gcd(B, C))
-        g_E = gcd(E, gcd(F, G))
-        g = gcd(g_A, g_E)
-
-        # g로 나눈 값을 사용: 확장된 베주 항등식
-        A, B, C, D = A // g, B // g, C // g, D // g
-        E, F, G, H = E // g, F // g, G // g, H // g
-
         # x0, y0, z0 초기값 설정
         x0, y0, z0 = sig1[1], sig2[1], sig3[1]
         assert A * x0 + B * y0 + C * z0 == D
@@ -94,8 +84,8 @@ def _solve(
         y_dir = C * E - A * G
         z_dir = A * F - B * E
 
-        print(f"{x0=}, {y0=}, {z0=}")
-        print(f"{x_dir=}, {y_dir=}, {z_dir=}")
+        # print(f"{x0=}, {y0=}, {z0=}")
+        # print(f"{x_dir=}, {y_dir=}, {z_dir=}")
 
         while True:
             t = random.randint(2, 1000)
@@ -140,7 +130,6 @@ def addmod(m, *numbers):
 if __name__ == "__main__":
     g = 2
     p, y, [sig1, sig2, sig3], ts1, ts2 = parse_input()
-    print(f"{p=}")
 
     # print(f"{y=}")
     # print(f"{sig1=}")

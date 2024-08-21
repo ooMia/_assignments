@@ -47,8 +47,8 @@ def batch_verify(sigs: list[G2Element], msgs: list[bytes], coefs: list[int]) -> 
     """
     Batch verify signatures
     Notes:
-        - LHS = sum(coef[i] * sig[i])
-        - RHS = mul(pk.pair(msg[i]) ** coef[i])
+        - LHS = sum(coef * sig).pair(G1.generator())
+        - RHS = mul(pk.pair(msg) ** coef)
     """
     S: G2Element = None
     for sig, coef in zip(sigs, coefs):

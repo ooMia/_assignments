@@ -1,10 +1,7 @@
 import hashlib
 import random
-from math import gcd
 
 from Crypto.Util.number import getStrongPrime, bytes_to_long
-
-from A2 import sum_product
 
 
 def sign(m, x, p):
@@ -63,25 +60,19 @@ if __name__ == "__main__":
     print(f"{sig2 = }")
     print(f"{sig3 = }")
 
-    assert batch_verify(
-        [sig1, sig2, sig3], ["upside", "academy", "best"], [3, 5, 7], y, p
-    )
+    msgs = ["upside", "academy", "best"]
+    assert batch_verify([sig1, sig2, sig3], msgs, [3, 5, 7], y, p)
 
     coefs = [random.randint(2, p - 2) for _ in range(6)]
     print(f"Coefs are: {coefs}")
 
-    # Extended Bezout's identity
     ts1 = coefs[0], coefs[1], coefs[2]
     ts2 = coefs[3], coefs[4], coefs[5]
-    d1 = gcd(*ts1)
-    d2 = gcd(*ts2)
-    print(f"{d1 = } {d2 = }")
 
-    k1 = sum_product(ts1, [sig1[1], sig2[1], sig3[1]], d2)
-    k2 = sum_product(ts2, [sig1[1], sig2[1], sig3[1]], d1)
-    print(f"{k1 = } {k2 = }")
+    from A2 import sum_product, _solve
 
-    from A2 import _solve, sum_product
+    k1 = sum_product(ts1, [sig1[1], sig2[1], sig3[1]])
+    k2 = sum_product(ts2, [sig1[1], sig2[1], sig3[1]])
 
     print("Give me your signatures!")
     r1, s1, r2, s2, r3, s3 = _solve(p, y, sig1, sig2, sig3, coefs[:3], coefs[3:])
@@ -96,15 +87,10 @@ if __name__ == "__main__":
         print("NO HACK")
         exit(0)
 
-    assert batch_verify(
-        [(r1, s1), (r2, s2), (r3, s3)], ["upside", "academy", "best"], coefs[:3], y, p
-    )
-    assert batch_verify(
-        [(r1, s1), (r2, s2), (r3, s3)], ["upside", "academy", "best"], coefs[3:], y, p
-    )
-
-    print(r1, s1, r2, s2, r3, s3, sep="\n")
+    assert batch_verify([(r1, s1), (r2, s2), (r3, s3)], msgs, coefs[:3], y, p)
+    assert batch_verify([(r1, s1), (r2, s2), (r3, s3)], msgs, coefs[3:], y, p)
 
     # with open('./flag', 'r') as f:
     #     flag = f.read()
     #     print("Here is the flag:", flag)
+    print(r1, s1, r2, s2, r3, s3, sep="\n")
