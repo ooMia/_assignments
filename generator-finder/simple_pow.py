@@ -52,3 +52,4 @@ if __name__ == '__main__':
     # no update of res until exp is odd
     a2 = solve_2(base, exp, mod)
     assert a1 == a2
+    
